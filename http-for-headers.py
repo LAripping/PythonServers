@@ -7,17 +7,22 @@ import SocketServer
 import logging
 import sys
 
-PORT = (8000 if len(sys.argv)==1 else sys.argv[-1])
+PORT = int(8000 if len(sys.argv)==1 else sys.argv[1])
 
 class GetHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_GET(self):
-        logging.error('\n'+str(self.headers))
+        print('\n[*] '+str(self.command)+' '+str(self.path))
+        print('\n[*] '+str(self.headers))
         SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
-
+    def do_PUT(self):
+        logging.info('\n'+str(self.command)+' '+str(self.path))
+        logging.info('\n'+str(self.headers))
+        SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
+        
 
 Handler = GetHandler
 httpd = SocketServer.TCPServer(("", PORT), Handler)
 
-print "Listening on port %d..." % PORT
+print("Listening on port %d..." % PORT)
 httpd.serve_forever()
 
