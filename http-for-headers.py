@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 #Original Version From https://gist.github.com/phrawzty/62540f146ee5e74ea1ab
 
