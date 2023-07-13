@@ -14,19 +14,22 @@ __all__ = ["SimpleHTTPRequestHandler"]
 
 import os
 import posixpath
-import BaseHTTPServer
+import http.server
 import urllib
+import time
 import cgi
+import sys
 import shutil
 import mimetypes
 import re
 try:
     from cStringIO import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 
-class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+
+class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
     """Simple HTTP request handler with GET/HEAD/POST commands.
 
@@ -58,7 +61,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_POST(self):
         """Serve a POST request."""
         r, info = self.deal_post_data()
-        print r, info, "by: ", self.client_address
+        print(r, info, "by: ", self.client_address)
         f = StringIO()
         f.write('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">')
         f.write("<html>\n<title>Upload Result Page</title>\n")
@@ -286,8 +289,19 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 
 def test(HandlerClass = SimpleHTTPRequestHandler,
-         ServerClass = BaseHTTPServer.HTTPServer):
-    BaseHTTPServer.test(HandlerClass, ServerClass)
+         ServerClass = http.server):
+    http.server.test(HandlerClass, ServerClass)
+
+
 
 if __name__ == '__main__':
-    test()
+    # test()
+    myServer = http.server.HTTPServer(("0.0.0.0", int(sys.argv[1])), SimpleHTTPRequestHandler)
+    print(time.asctime(), "Server Starts - %s:%s" % ("0.0.0.0", int(sys.argv[1])))
+    try:
+        myServer.serve_forever()
+    except KeyboardInterrupt:
+        pass
+
+    myServer.server_close()
+    print(time.asctime(), "Server Stopped - %s:%s" % ("0.0.0.0", int(sys.argv[1])))
