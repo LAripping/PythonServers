@@ -9,10 +9,9 @@ see: https://gist.github.com/UniIsland/3346170
 """
  
  
-__version__ = "0.1"
+__version__ = "2.0"
 __all__ = ["SimpleHTTPRequestHandler"]
-__author__ = "bones7456"
-__home_page__ = "http://li2z.cn/"
+
  
 import os
 import posixpath
@@ -69,9 +68,9 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             f.write(b"<strong>Failed:</strong>")
         f.write(info.encode())
         f.write(("<br><a href=\"%s\">back</a>" % self.headers['referer']).encode())
-        f.write(b"<hr><small>Powerd By: bones7456, check new version at ")
-        f.write(b"<a href=\"http://li2z.cn/?s=SimpleHTTPServerWithUpload\">")
-        f.write(b"here</a>.</small></body>\n</html>\n")
+        # f.write(b"<hr><small>Powerd By: bones7456, check new version at ")
+        # f.write(b"<a href=\"http://li2z.cn/?s=SimpleHTTPServerWithUpload\">")
+        # f.write(b"here</a>.</small></body>\n</html>\n")
         length = f.tell()
         f.seek(0)
         self.send_response(200)
