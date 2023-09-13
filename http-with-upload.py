@@ -21,6 +21,8 @@ import html
 import shutil
 import mimetypes
 import re
+import sys
+import time
 from io import BytesIO
  
  
@@ -291,4 +293,14 @@ def test(HandlerClass = SimpleHTTPRequestHandler,
     http.server.test(HandlerClass, ServerClass)
  
 if __name__ == '__main__':
-    test()
+    # test()
+
+    myServer = http.server.HTTPServer(("0.0.0.0", int(sys.argv[1])), SimpleHTTPRequestHandler)
+    print(time.asctime(), "Server Starts - %s:%s" % ("0.0.0.0", int(sys.argv[1])))
+    try:
+        myServer.serve_forever()
+    except KeyboardInterrupt:
+        pass
+
+    myServer.server_close()
+    print(time.asctime(), "Server Stopped - %s:%s" % ("0.0.0.0", int(sys.argv[1])))
